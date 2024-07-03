@@ -9,7 +9,7 @@ pipeline {
     stage('Checkout') {
       steps {
         sh 'echo passed'
-        // git branch: 'main', url: 'https://github.com/vijaysh93/Jenkins-Zero-To-Hero.git'
+        //git branch: 'main', url: 'https://github.com/vijaysh93/Jenkins-Zero-To-Hero.git'
       }
     }
     stage('Build and Test') {
@@ -56,10 +56,8 @@ pipeline {
                 sh '''
                     git config user.email "vijaysh93@gmail.com"
                     git config user.name "vijaysh93"
-                    def buildNumber = env.BUILD_NUMBER
-                    def filePath = env.DEPLOYMENT_FILE
                     BUILD_NUMBER=${BUILD_NUMBER}
-                    sed -i 's/value: \"[0-9]*\"  # Placeholder for the build number/value: \"${buildNumber}\"/' ${filePath}        
+                    sed -i 's/value: \"[0-9]*\"  # Placeholder for the build number/value: \"${BUILD_NUMBER}\"/' ${DEPLOYMENT_FILE}
                     git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
                     git commit -m "Update deployment image to version ${BUILD_NUMBER}"
                     git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
